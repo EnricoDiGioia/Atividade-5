@@ -15,14 +15,12 @@ public class Main {
 
         int escolha;
         do {
-            escolha = JOptionPane.showOptionDialog(null, "Escolha uma opção:",
-                    "Menu INPT", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-                    null, opcoes, opcoes[0]);
+            escolha = JOptionPane.showOptionDialog(null, "Escolha uma opção:", "Menu", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[0]);
 
             switch (escolha) {
                 case 0 -> {
                     String nome = JOptionPane.showInputDialog("Nome do município:");
-                    double area = Double.parseDouble(JOptionPane.showInputDialog("Área (km²):"));
+                    double area = Double.parseDouble(JOptionPane.showInputDialog("Área (km2):"));
                     int pop = Integer.parseInt(JOptionPane.showInputDialog("População:"));
                     arvore.inserir(new Municipio(nome, area, pop));
                     JOptionPane.showMessageDialog(null, "Município inserido com sucesso!");
@@ -36,12 +34,12 @@ public class Main {
                     JOptionPane.showMessageDialog(null, "Densidade demográfica:\n\n" + resultado);
                 }
                 case 3 -> {
-                    double areaNacional = Double.parseDouble(JOptionPane.showInputDialog("Área total do território nacional (km²):"));
+                    double areaNacional = Double.parseDouble(JOptionPane.showInputDialog("Área total do território nacional (km2):"));
                     String resultado = arvore.Porcentagens(areaNacional);
                     JOptionPane.showMessageDialog(null, "Porcentagem da área:\n\n" + resultado);
                 }
                 case 4 -> {
-                    List<Municipio> todos = arvore.getTodosMunicipios();
+                    List<Municipio> todos = arvore.getMunicipios();
                     todos.sort((a, b) -> Double.compare(b.getDensidade(), a.getDensidade()));
 
                     String resultado = "";
@@ -50,12 +48,12 @@ public class Main {
                     for (Municipio m : todos) {
                         if (i < 5) {
                             resultado += m.getNome() + ": " +
-                                    String.format("%.2f hab/km²", m.getDensidade()) + "\n";
+                                    String.format("%.2f hab/km2", m.getDensidade()) + "\n";
                             limite = m.getDensidade();
                             i++;
                         } else if (m.getDensidade() == limite) {
                             resultado += m.getNome() + ": " +
-                                    String.format("%.2f hab/km²", m.getDensidade()) + "\n";
+                                    String.format("%.2f hab/km2", m.getDensidade()) + "\n";
                         } else {
                             break;
                         }

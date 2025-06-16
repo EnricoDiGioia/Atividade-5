@@ -5,53 +5,63 @@ public class ArvoreMunicipios {
     private NoArvore raiz;
 
     public void inserir(Municipio m) {
-        raiz = addRec(raiz, m);
-    }
-
-    private NoArvore addRec(NoArvore no, Municipio m) {
-        if (no == null) return new NoArvore(m);
-        if (m.getNome().compareToIgnoreCase(no.municipio.getNome()) < 0)
-            no.esquerda = addRec(no.esquerda, m);
-        else
-            no.direita = addRec(no.direita, m);
-        return no;
+        if (raiz == null) {
+            raiz = new NoArvore(m);
+            return;
+        }
+        NoArvore atual = raiz;
+        while (true) {
+            if (m.getNome().compareToIgnoreCase(atual.municipio.getNome()) < 0) {
+                if (atual.esquerda == null) {
+                    atual.esquerda = new NoArvore(m);
+                    break;
+                }
+                atual = atual.esquerda;
+            } else {
+                if (atual.direita == null) {
+                    atual.direita = new NoArvore(m);
+                    break;
+                }
+                atual = atual.direita;
+            }
+        }
     }
 
     public String listar() {
-        return listarRec(raiz);
+        return listar(raiz);
     }
 
-    private String listarRec(NoArvore no) {
+    private String listar(NoArvore no) {
         if (no == null) return "";
-        return listarRec(no.esquerda)
+        return listar(no.esquerda)
                 + no.municipio.getNome() + "\n"
-                + listarRec(no.direita);
+                + listar(no.direita);
     }
 
     public String Densidades() {
-        return densidadesRec(raiz);
+        return densidades(raiz);
     }
 
-    private String densidadesRec(NoArvore no) {
+    private String densidades(NoArvore no) {
         if (no == null) return "";
-        return densidadesRec(no.esquerda)
-                + String.format("%s: %.2f hab/km²\n", no.municipio.getNome(), no.municipio.getDensidade())
-                + densidadesRec(no.direita);
+        return densidades(no.esquerda)
+                + String.format("%s: %.2f hab/km2\n", no.municipio.getNome(), no.municipio.getDensidade())
+                + densidades(no.direita);
     }
 
     public String Porcentagens(double areaNacional) {
-        return porcentagensRec(raiz, areaNacional);
+        return porcentagens(raiz, areaNacional);
     }
 
-    private String porcentagensRec(NoArvore no, double areaNacional) {
+    private String porcentagens(NoArvore no, double areaNacional) {
         if (no == null) return "";
         double perc = (no.municipio.getArea() / areaNacional) * 100;
-        return porcentagensRec(no.esquerda, areaNacional)
+        return porcentagens(no.esquerda, areaNacional)
                 + String.format("%s: %.2f%% do território\n", no.municipio.getNome(), perc)
-                + porcentagensRec(no.direita, areaNacional);
+                + porcentagens(no.direita, areaNacional);
     }
 
-    public List<Municipio> getTodosMunicipios() {
+    public List<Municipio> getMunicipios() {
         List<Municipio> lista = new ArrayList<>();
         preencher(raiz, lista);
         return lista;
